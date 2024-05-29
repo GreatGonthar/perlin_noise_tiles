@@ -3,7 +3,7 @@ import drawAutotiles from "./drawAutotiles.js";
 import drawImage from "./drawImage.js";
 import autotileMaster from "./autotileMaster.js";
 
-const noiseLevel = 255;
+let noiseLevel = 0;
 const squareSize = 16;
 let noiseScale = 0.05;
 let step = 20;
@@ -16,6 +16,7 @@ let TILES_HEIGHT = 40;
 let WINDOW_WIDTH = TILES_WIDTH * squareSize;
 let WINDOW_HEIGHT = TILES_HEIGHT * squareSize;
 const SEED = Math.floor(Math.random() * 40000);
+
 let seaLevel = 0;
 let colors = [
 	"#235d5e",
@@ -51,7 +52,7 @@ function sketch(p) {
 		}
 	};
 	p.draw = () => {
-		let tilesArr = perlinArr(p, colors.length, TILES_WIDTH, TILES_HEIGHT, noiseScale, scaleX, scaleY);
+		let tilesArr = perlinArr(p, seaLevel, TILES_WIDTH, TILES_HEIGHT, noiseScale, scaleX, scaleY);
 		let autotileNumbers = autotileMaster(tilesArr.level1);
 
 		for (let y = 0; y < TILES_HEIGHT; y += 1) {
@@ -105,24 +106,28 @@ function sketch(p) {
 			noiseScale /= 2;
 		} else if (p.keyCode === 109) {
 			noiseScale *= 2;
-		} else if (p.keyCode === 49 && tileScale > 0.125) {
-			tileScale /= 2;
-			TILES_WIDTH *= 2;
-			TILES_HEIGHT *= 2;
-		} else if (p.keyCode === 50) {
-			tileScale *= 2;
-			TILES_WIDTH /= 2;
-			TILES_HEIGHT /= 2;
 		} else if (p.keyCode === 51 && tileScale > 0.125) {
-			noiseScale /= 2;
 			tileScale /= 2;
 			TILES_WIDTH *= 2;
 			TILES_HEIGHT *= 2;
 		} else if (p.keyCode === 52) {
+			tileScale *= 2;
+			TILES_WIDTH /= 2;
+			TILES_HEIGHT /= 2;
+		} else if (p.keyCode === 49 && tileScale > 0.125) {
+			noiseScale /= 2;
+			tileScale /= 2;
+			TILES_WIDTH *= 2;
+			TILES_HEIGHT *= 2;
+		} else if (p.keyCode === 50) {
 			noiseScale *= 2;
 			tileScale *= 2;
 			TILES_WIDTH /= 2;
 			TILES_HEIGHT /= 2;
+		} else if (p.keyCode === 53) {
+			seaLevel -= 0.01;
+		} else if (p.keyCode === 54) {
+			seaLevel += 0.01;
 		}
 
 		p.redraw();
