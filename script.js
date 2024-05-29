@@ -61,19 +61,6 @@ function sketch(p) {
 
 				drawImage(p, tilesetSprite, squareSize, tileScale, x, y, tilesetArr[myTile].x, tilesetArr[myTile].y);
 
-				if (terrainObj.tree) {
-					p.image(
-						summerTreesSprite,
-						x * squareSize * tileScale - squareSize,
-						y * squareSize * tileScale - squareSize * 2,
-						squareSize * 3 * tileScale,
-						squareSize * 3 * tileScale,
-						terrainObj.tree.x * squareSize * 3,
-						terrainObj.tree.y,
-						squareSize * 3,
-						squareSize * 3
-					);
-				}
 				if (terrainObj.stone) {
 					p.image(
 						summerTreesSprite,
@@ -87,11 +74,25 @@ function sketch(p) {
 						squareSize
 					);
 				}
+				if (terrainObj.tree) {
+					p.image(
+						summerTreesSprite,
+						x * squareSize * tileScale - squareSize,
+						y * squareSize * tileScale - squareSize * 2,
+						squareSize * 3 * tileScale,
+						squareSize * 3 * tileScale,
+						terrainObj.tree.x * squareSize * 3,
+						terrainObj.tree.y,
+						squareSize * 3,
+						squareSize * 3
+					);
+				}
 			}
 		}
 	};
 
 	p.keyPressed = (e) => {
+		console.log(tileScale);
 		if (p.keyCode === 37) {
 			scaleX -= noiseScale * step; // Двигаемся влево
 		} else if (p.keyCode === p.RIGHT_ARROW) {
@@ -104,7 +105,7 @@ function sketch(p) {
 			noiseScale /= 2;
 		} else if (p.keyCode === 109) {
 			noiseScale *= 2;
-		} else if (p.keyCode === 49) {
+		} else if (p.keyCode === 49 && tileScale > 0.125) {
 			tileScale /= 2;
 			TILES_WIDTH *= 2;
 			TILES_HEIGHT *= 2;
@@ -112,10 +113,16 @@ function sketch(p) {
 			tileScale *= 2;
 			TILES_WIDTH /= 2;
 			TILES_HEIGHT /= 2;
-		} else if (p.keyCode === 51) {
-			seaLevel > 0 ? (seaLevel -= 1) : seaLevel;
+		} else if (p.keyCode === 51 && tileScale > 0.125) {
+			noiseScale /= 2;
+			tileScale /= 2;
+			TILES_WIDTH *= 2;
+			TILES_HEIGHT *= 2;
 		} else if (p.keyCode === 52) {
-			seaLevel < colors.length - 1 ? (seaLevel += 1) : seaLevel;
+			noiseScale *= 2;
+			tileScale *= 2;
+			TILES_WIDTH /= 2;
+			TILES_HEIGHT /= 2;
 		}
 
 		p.redraw();
